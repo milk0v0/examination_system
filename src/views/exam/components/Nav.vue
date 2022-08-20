@@ -1,7 +1,7 @@
 <template>
 	<div class="examNav flex justify-content-space-evenly">
 		<span>{{ examMin }}</span>
-		<span class="click">试题列表</span>
+		<span class="click" @click="$emit('click')">试题列表</span>
 	</div>
 </template>
 
@@ -19,10 +19,8 @@
 				isEnd: false,
 			};
 		},
-		watch: {
-			endTime() {
-				this.getExamMin();
-			},
+		created() {
+			this.getExamMin();
 		},
 		methods: {
 			getExamMin() {
@@ -40,7 +38,6 @@
 
 <style lang="scss" scoped>
 	.examNav {
-		width: 80%;
 		padding: 0.3rem 0;
 		border: 1px solid;
 
@@ -50,8 +47,8 @@
 
 		.click {
 			color: #169bd5;
-      transition: 0.3s color;
-			cursor: default;
+			transition: 0.3s color;
+			cursor: pointer;
 
 			&:hover {
 				color: #166fd5;

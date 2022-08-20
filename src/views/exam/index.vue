@@ -1,20 +1,25 @@
 <template>
-	<div class="exam">
-		<Nav :endTime="endTime" />
+	<div class="exam flex-direction-column">
+		<template v-if="questionList.length">
+			<Nav :endTime="endTime" />
+			<Answer :info="questionList[index]" />
+		</template>
 	</div>
 </template>
 
 <script>
 	import { startExam } from "@/api";
 	import Nav from "./components/Nav";
+	import Answer from "./components/Answer";
 
 	export default {
 		name: "exam",
-		components: { Nav },
+		components: { Nav, Answer },
 		data() {
 			return {
 				endTime: Date.now() + 40 * 1000 * 60,
 				questionList: [],
+				index: 0,
 			};
 		},
 		created() {
@@ -33,4 +38,8 @@
 </script>
 
 <style lang="scss" scoped>
+	.exam {
+		width: 80%;
+		margin: auto;
+	}
 </style>

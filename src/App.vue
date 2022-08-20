@@ -47,4 +47,8 @@ export default {
 			display: block;
 		}
 	}
+
+	.flex-direction-column {
+		flex-direction: column;
+	}
 </style>

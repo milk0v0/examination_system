@@ -1,4 +1,5 @@
 import axios from 'axios';
+import message from './message';
 
 class HttpRequest {
   constructor(options) {
@@ -38,6 +39,11 @@ class HttpRequest {
   }
 }
 
-export const http = new HttpRequest({
+const http = new HttpRequest({
   baseURL: '/api'
 }).request();
+
+export {
+  message,
+  http
+}
