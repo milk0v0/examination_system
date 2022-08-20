@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '@/views/login'
-import exam from '@/views/exam'
 
 Vue.use(VueRouter)
 
@@ -18,5 +17,7 @@ const routes = [{
 const router = new VueRouter({
   routes
 })
+
+
 
 export default router
