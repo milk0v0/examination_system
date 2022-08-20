@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+		<router-view class="flex justify-content-center"></router-view>
 	</div>
 </template>
 
@@ -14,5 +14,29 @@
 	* {
 		margin: 0;
 		padding: 0;
+	}
+
+	#app {
+		max-width: 800px;
+		min-height: 100%;
+		margin: auto;
+	}
+
+	.flex {
+		display: flex;
+	}
+
+	.justify-content-center {
+		justify-content: center;
+	}
+
+	.justify-content-space-evenly {
+		justify-content: space-between;
+
+		&:before,
+		&:after {
+			content: "";
+			display: block;
+		}
 	}
 </style>
