@@ -1,4 +1,4 @@
-import { http } from '@/util/index'
+import { http } from '@/util'
 
 /**
  * 发送短信验证码

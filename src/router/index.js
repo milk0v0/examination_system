@@ -1,14 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import login from '@/views/login'
+import exam from '@/views/exam'
 
 Vue.use(VueRouter)
 
+const routes = [{
+  path: '/login',
+  name: 'login',
+  component: login
+},{
+  path: '/exam',
+  name: 'exam',
+  component: exam
+}]
+
 const router = new VueRouter({
-  routes: [{
-    path: '/login', // 登录页
-    name: 'login',
-    component: resolve => require(['@/views/login'], resolve)
-  }]
+  routes
 })
 
 // 监测没有token默认跳转登录页
