@@ -16,19 +16,19 @@ export default {
     // 返回按钮 显示/隐藏
     backBtnBol: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     // 个人信息按钮 显示/隐藏
     userBtnBol: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     // 退出登录按钮 显示/隐藏
     logoutBtnBol: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
 
@@ -55,6 +55,7 @@ export default {
 <style lang="scss" scoped>
 .header-nav {
   width: 100%;
+  height: 1.5rem;
   box-sizing: border-box;
   padding: .3rem .3rem;
   font-size: .5rem;

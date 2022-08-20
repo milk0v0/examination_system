@@ -88,18 +88,14 @@
 
 <style scoped>
 .login-page {
-  width: 100%;
-  height: 100vh;
+  width: 10rem;
   box-sizing: border-box;
-  position: relative;
+  margin: auto;
 }
 .login-page .login-box {
   width: 100%;
   box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  padding-top: 2rem;
 }
 .login-page .login-box .list {
   width: 100%;
