@@ -8,10 +8,6 @@ const router = new VueRouter({
     path: '/login', // 登录页
     name: 'login',
     component: resolve => require(['@/views/login'], resolve)
-  }, {
-    path: '/',
-    // component: resolve => require(['@/views/Home'], resolve),
-    children: [{}]
   }]
 })
 
