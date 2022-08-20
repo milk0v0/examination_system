@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-    <HeaderNav></HeaderNav>
+    <HeaderNav :showTab="$route.meta ? $route.meta.showTab : {}"></HeaderNav>
 		<router-view class="flex justify-content-center"></router-view>
 	</div>
 </template>
@@ -8,7 +8,10 @@
 <script>
 import HeaderNav from './components/HeaderNav.vue'
 export default {
-  components: {HeaderNav}
+  components: {HeaderNav},
+  mounted() {
+    console.log(this.$route.meta)
+  }
 }
 </script>
 

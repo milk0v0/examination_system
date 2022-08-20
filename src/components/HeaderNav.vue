@@ -1,11 +1,11 @@
 <template>
   <div class="header-nav">
     <div class="left">
-      <div class="btn" v-if="backBtnBol" @click="handleBack">返回</div>
+      <div class="btn" v-if="showTab.backBtnBol" @click="handleBack">返回</div>
     </div>
     <div class="right">
-      <div class="btn" v-if="userBtnBol" @click="jumpUserInfo">个人信息</div>
-      <div class="btn logout" v-if="logoutBtnBol" @click="handleLogout">退出</div>
+      <div class="btn" v-if="showTab.userBtnBol" @click="jumpUserInfo">个人信息</div>
+      <div class="btn logout" v-if="showTab.logoutBtnBol" @click="handleLogout">退出</div>
     </div>
   </div>
 </template>
@@ -13,22 +13,15 @@
 <script>
 export default {
   props: {
-    // 返回按钮 显示/隐藏
-    backBtnBol: {
-      type: Boolean,
-      default: false
-    },
-
-    // 个人信息按钮 显示/隐藏
-    userBtnBol: {
-      type: Boolean,
-      default: false
-    },
-
-    // 退出登录按钮 显示/隐藏
-    logoutBtnBol: {
-      type: Boolean,
-      default: false
+    showTab: {
+      type: Object,
+      default: ()=>{
+        return {
+          backBtnBol: false, // 返回按钮 显示/隐藏
+          userBtnBol: false, // 个人信息按钮 显示/隐藏
+          logoutBtnBol: false // 退出登录按钮 显示/隐藏
+        }
+      }
     }
   },
 
@@ -48,6 +41,10 @@ export default {
       localStorage.setItem('phone', '')
       this.$router.push('/login')
     }
+  },
+
+  mounted() {
+    console.log(this.showTab)
   }
 }
 </script>

@@ -9,10 +9,15 @@ const routes = [{
   path: '/login',
   name: 'login',
   component: login
-},{
+}, {
   path: '/exam',
   name: 'exam',
-  component: exam
+  component: exam,
+  meta: {
+    showTab: {
+      backBtnBol: true
+    },
+  }
 }]
 
 const router = new VueRouter({
