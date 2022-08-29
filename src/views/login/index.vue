@@ -3,12 +3,12 @@
     <div class="login-box">
       <div class="list">
         <span class="name">手机号</span>
-        <input class="inp phone-inp" maxlength="11" v-model="phone">
+        <input class="inp phone-inp" type="number" maxlength="11" v-model="phone">
       </div>
       <div class="list">
         <span class="name">验证码</span>
         <div class="code">
-          <input class="inp code-inp" v-model="validCode">
+          <input class="inp code-inp" type="number" v-model="validCode">
           <span class="repeat" v-if="fetchCodeSend">{{ countDown }}s重新获取</span>
           <span class="code-btn" @click="fetchCode" v-else>获取验证码</span>
         </div>
