@@ -34,9 +34,9 @@
       // 获取验证码
       fetchCode() {
         if(!this.phone) {
-          this.message('请输入手机号')
+          this.$message('请输入手机号')
         }else if(!/^1\d{10}$/.test(this.phone)) {
-          this.message('请输入正确的手机号')
+          this.$message('请输入正确的手机号')
         }else {
           sendValidCode({
             phone: this.phone
@@ -52,9 +52,9 @@
                   this.countDown = 60;
                 }
               }, 1000);
-              this.message("验证码已发送成功");
+              this.$message("验证码已发送成功");
             }else {
-              this.message(msg)
+              this.$message(msg)
             }
           })
         }
@@ -63,9 +63,9 @@
       // 登录
       submit() {
         if(!/^1\d{10}$/.test(this.phone)) {
-          this.message('请输入正确的手机号')
+          this.$message('请输入正确的手机号')
         }else if(!this.validCode) {
-          this.message('请输入验证码')
+          this.$message('请输入验证码')
         }else {
           login({
             phone: this.phone,
@@ -77,7 +77,7 @@
               localStorage.setItem('phone', this.phone)
               this.$router.push('/home')
             }else {
-              this.message(msg)
+              this.$message(msg)
             }
           })
         }

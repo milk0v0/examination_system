@@ -24,7 +24,7 @@
 					this.$destroy(true);
 					this.$el.parentNode.removeChild(this.$el);
 				}, 500);
-			}, this.duration || 3000);
+			}, this.duration || 2000);
 		},
 	};
 </script>
