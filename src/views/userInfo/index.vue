@@ -55,7 +55,7 @@ export default {
         if(code == 200) {
           this.info = data
         }else {
-          this.message(msg)
+          this.$message(msg)
         }
       })
     }

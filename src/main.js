@@ -18,6 +18,12 @@ window.onresize = () => {
 }
 
 Vue.prototype.$message = message;
+Vue.prototype.$message.error = function (str) {
+  message({
+    type: 'error',
+    msg: str
+  })
+}
 
 new Vue({
   router,

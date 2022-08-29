@@ -12,7 +12,7 @@ export async function sendValidCode(params) {
 /**
  * 登录
  * @param {Object} params
- * @param {string} params.phone 电话号码
+ * @param {string} params.phone 电话号码 13381178835
  * @param {string} params.validCode 验证码（测试时填写 111111）
  */
 export async function login(params) {
