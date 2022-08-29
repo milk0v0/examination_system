@@ -2,8 +2,8 @@
   <div class="examStart-page">
     <div class="examStart-box">
       <div class="tips">
-        <p>本次考试题目共50道</p>
-        <p>考试时间 40 分钟，到时间自动交卷</p>
+        <p>本次考试题目共{{ $route.query.questionNum }}道</p>
+        <p>考试时间 {{ $route.query.examMin }} 分钟，到时间自动交卷</p>
       </div>
       <div class="btn" @click="jumpExam">开始考试</div>
     </div>
@@ -15,7 +15,8 @@ export default {
   methods: {
     // 跳转答题页
     jumpExam() {
-      this.$router.push('/exam')
+      let { imitate = false } = this.$route.query
+      this.$router.push(`/exam${imitate ? '?imitate=true' : ''}`)
     }
   }
 }

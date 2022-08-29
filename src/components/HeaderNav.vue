@@ -38,6 +38,7 @@ export default {
 
     handleLogout() {
       localStorage.setItem('token', '')
+      localStorage.setItem('userId', '')
       localStorage.setItem('phone', '')
       this.$router.push('/login')
     }

@@ -4,10 +4,21 @@ import login from '@/views/login'
 import exam from '@/views/exam'
 import examStart from '@/views/examStart'
 import userInfo from '@/views/userInfo'
+import home from '@/views/home'
 
 Vue.use(VueRouter)
 
 const routes = [{
+  path: '/', // 用户信息
+  name: 'home',
+  component: home,
+  meta: {
+    showTab: {
+      userBtnBol: true,
+      logoutBtnBol: true
+    }
+  }
+}, {
   path: '/login',
   name: 'login',
   component: login

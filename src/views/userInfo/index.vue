@@ -49,18 +49,18 @@ export default {
   methods: {
     getUserInfo() {
       userInfo({
-        userId: this.userId || localStorage.getItem("userId"),
+        userId: this.userId || localStorage.getItem("userId")
       }).then(res => {
         let { code, msg, data } = res
         if(code == 200) {
           this.info = data
         }else {
-          this.$message(msg)
+          this.$message.error(msg)
         }
       })
     }
   },
-  mounted() {
+  created() {
     this.getUserInfo()
   }
 }

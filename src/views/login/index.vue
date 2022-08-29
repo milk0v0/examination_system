@@ -96,7 +96,7 @@
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("userId", data.userId);
 					localStorage.setItem("phone", this.proxyPhone);
-					this.$router.push("/home");
+					this.$router.push("/");
 				});
 			},
 		},
