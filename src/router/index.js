@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '@/views/login'
 import exam from '@/views/exam'
+import examStart from '@/views/examStart'
+import userInfo from '@/views/userInfo'
 
 Vue.use(VueRouter)
 
@@ -17,6 +19,25 @@ const routes = [{
     showTab: {
       backBtnBol: true
     },
+  }
+}, {
+  path: '/examStart', // 考试入口
+  name: 'examStart',
+  component: examStart,
+  meta: {
+    showTab: {
+      backBtnBol: true
+    }
+  }
+}, {
+  path: '/userInfo', // 用户信息
+  name: 'userInfo',
+  component: userInfo,
+  meta: {
+    showTab: {
+      backBtnBol: true,
+      logoutBtnBol: true
+    }
   }
 }]
 

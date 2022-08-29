@@ -36,3 +36,12 @@ export async function login(params) {
  export async function startExam(params) {
   return await http.post('/exam/api/examUserExam/startExam', params);
 }
+
+/**
+ * 获取用户信息
+ * @param {Object} params
+ * @param {string} params.userId  用户ID
+ */
+ export async function userInfo(params) {
+  return await http.post('/exam/api/examUser/userInfo', params);
+}
