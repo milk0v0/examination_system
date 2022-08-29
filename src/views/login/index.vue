@@ -1,20 +1,24 @@
 <template>
 	<div class="login-page">
-    <div class="login-box">
-      <div class="list">
-        <span class="name">手机号</span>
-        <input class="inp phone-inp" maxlength="11" v-model="proxyPhone">
-      </div>
-      <div class="list">
-        <span class="name">验证码</span>
-        <div class="code">
-          <input class="inp code-inp" v-model="validCode">
-          <span class="repeat" v-if="fetchCodeSend">{{ countDown }}s重新获取</span>
-          <span class="code-btn" @click="fetchCode" v-else>获取验证码</span>
-        </div>
-      </div>
-      <div class="login-btn" @click="submit">登录</div>
-    </div>
+		<div class="login-box">
+			<div class="list">
+				<span class="name">手机号</span>
+				<input class="inp phone-inp" maxlength="11" v-model="proxyPhone" />
+			</div>
+			<div class="list">
+				<span class="name">验证码</span>
+				<div class="code flex align-items-center">
+					<input class="inp code-inp" v-model="validCode" />
+					<span class="repeat" v-if="fetchCodeSend"
+						>{{ countDown }}s重新获取</span
+					>
+					<span class="code-btn pointer" @click="fetchCode" v-else
+						>获取验证码</span
+					>
+				</div>
+			</div>
+			<div class="login-btn pointer" @click="submit">登录</div>
+		</div>
 	</div>
 </template>
 
@@ -103,84 +107,89 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.login-page {
 		width: 10rem;
 		box-sizing: border-box;
 		margin: auto;
-	}
-	.login-page .login-box {
-		width: 100%;
-		box-sizing: border-box;
-		padding-top: 2rem;
-	}
-	.login-page .login-box .list {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 0 1.2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-top: 1rem;
-	}
-	.list .name {
-		font-size: 0.5rem;
-	}
-	.list .inp {
-		outline: none;
-		height: 1rem;
-		box-sizing: border-box;
-		padding: 0 0.2rem;
-		border-radius: 0.05rem;
-		border: 1px solid #c3c3c3;
-	}
-	.list .phone-inp,
-	.list .code {
-		width: 5.5rem;
-	}
-	.list .code {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.list .code .inp.code-inp {
-		width: 3rem;
-	}
-	.list .code .repeat {
-		width: 2.3rem;
-		height: 1rem;
-		box-sizing: border-box;
-		line-height: 1rem;
-		font-size: 0.3rem;
-		background-color: #f3f3f3;
-		border-radius: 0.05rem;
-		color: #c3c3c3;
-		text-align: center;
-	}
-	.list .code .code-btn {
-		width: 2.3rem;
-		height: 1rem;
-		box-sizing: border-box;
-		line-height: 1rem;
-		font-size: 0.3rem;
-		background-color: #f3f3f3;
-		border-radius: 0.05rem;
-		color: #169bd5;
-		text-align: center;
-		cursor: pointer;
-	}
 
-	.login-btn {
-		width: 5rem;
-		height: 1.1rem;
-		box-sizing: border-box;
-		line-height: 1.1rem;
-		font-size: 0.4rem;
-		background-color: #169bd5;
-		color: #fff;
-		text-align: center;
-		margin: 1.5rem auto;
-		border-radius: 0.08rem;
-		cursor: pointer;
+		.login-box {
+			width: 100%;
+			box-sizing: border-box;
+			padding-top: 2rem;
+
+			.list {
+				width: 100%;
+				box-sizing: border-box;
+				padding: 0 1.2rem;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 1rem;
+
+				.name {
+					font-size: 0.5rem;
+				}
+
+				.inp {
+					outline: none;
+					height: 1rem;
+					box-sizing: border-box;
+					padding: 0 0.2rem;
+					border-radius: 0.05rem;
+					border: 1px solid #c3c3c3;
+				}
+
+				.code,
+				.phone-inp {
+					width: 5.5rem;
+				}
+
+				.code {
+					justify-content: space-between;
+
+					.inp.code-inp {
+						width: 3rem;
+					}
+
+					.repeat {
+						width: 2.3rem;
+						height: 1rem;
+						box-sizing: border-box;
+						line-height: 1rem;
+						font-size: 0.3rem;
+						background-color: #f3f3f3;
+						border-radius: 0.05rem;
+						color: #c3c3c3;
+						text-align: center;
+					}
+
+					.code-btn {
+						width: 2.3rem;
+						height: 1rem;
+						box-sizing: border-box;
+						line-height: 1rem;
+						font-size: 0.3rem;
+						background-color: #f3f3f3;
+						border-radius: 0.05rem;
+						color: #169bd5;
+						text-align: center;
+					}
+				}
+			}
+
+			.login-btn {
+				width: 5rem;
+				height: 1.1rem;
+				box-sizing: border-box;
+				line-height: 1.1rem;
+				font-size: 0.4rem;
+				background-color: #169bd5;
+				color: #fff;
+				text-align: center;
+				margin: 1.5rem auto;
+				border-radius: 0.08rem;
+			}
+		}
 	}
 </style>

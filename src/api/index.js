@@ -24,7 +24,7 @@ export async function login(params) {
  * @param {Object} params
  * @param {string} params.userId 用户ID
  */
- export async function getExamInfo(params) {
+export async function getExamInfo(params) {
   return await http.post('/exam/api/examUserExam/getExamInfo', params);
 }
 
@@ -33,15 +33,44 @@ export async function login(params) {
  * @param {Object} params
  * @param {string} params.userId 用户ID
  */
- export async function startExam(params) {
+export async function startExam(params) {
   return await http.post('/exam/api/examUserExam/startExam', params);
 }
 
 /**
  * 获取用户信息
  * @param {Object} params
- * @param {string} params.userId  用户ID
+ * @param {string} params.userId 用户ID
  */
- export async function userInfo(params) {
+export async function userInfo(params) {
   return await http.post('/exam/api/examUser/userInfo', params);
+}
+
+/**
+ * 下一题
+ * @param {Object} params
+ * @param {string} params.userId 用户ID
+ * @param {string} params.questionId 试题ID
+ * @param {string} params.answer 答案，值来自于选项序号indexNumber，单选格式：1，多选格式: 1+2+3+4
+ */
+export async function subAnswer(params) {
+  return await http.post('/exam/api/examUserExam/subAnswer', params);
+}
+
+/**
+ * 交卷
+ * @param {Object} params
+ * @param {string} params.userId 用户ID
+ * @param {string} params.questionId 最后一题的试题ID
+ * @param {string} params.answer 答案，值来自于选项序号indexNumber，单选格式：1，多选格式: 1+2+3+4
+ */
+export async function subPapers(params) {
+  return await http.post('/exam/api/examUserExam/subPapers', params);
+}
+
+/**
+ * 清缓存
+ */
+export async function test(params) {
+  return await http.post(`/exam/test?userId=${localStorage.getItem("userId")}`, params);
 }

@@ -1,4 +1,5 @@
 module.exports = {
+  lintOnSave: false,
   devServer: {
     proxy: {
       '/api': {
@@ -7,6 +8,10 @@ module.exports = {
           '^/api': ''
         }
       }
+    },
+    overlay: {
+      warning: false,
+      errors: false
     }
   },
 }

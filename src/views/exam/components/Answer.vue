@@ -31,9 +31,9 @@
 					return this.value;
 				},
 				set(newVal) {
-					this.$emit('input', newVal);
-				}
-			}
+					this.$emit("input", newVal);
+				},
+			},
 		},
 	};
 </script>

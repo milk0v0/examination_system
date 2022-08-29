@@ -54,4 +54,12 @@ export default {
 	.flex-direction-column {
 		flex-direction: column;
 	}
+
+	.align-items-center {
+		align-items: center;
+	}
+
+	.pointer {
+		cursor: pointer;
+	}
 </style>

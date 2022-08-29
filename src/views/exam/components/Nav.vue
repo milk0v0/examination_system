@@ -27,7 +27,9 @@
 				const timeDiffer = this.endTime - Date.now();
 				const minute = parseInt(timeDiffer / (1000 * 60));
 				const second = parseInt((timeDiffer % (1000 * 60)) / 1000);
-				this.examMin = `${minute}:${second}`;
+				this.examMin = `${minute < 10 ? "0" + minute : minute}:${
+					second < 10 ? "0" + second : second
+				}`;
 
 				if (timeDiffer <= 0 || this.isEnd) return;
 				requestAnimationFrame(this.getExamMin);
