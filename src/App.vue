@@ -1,18 +1,18 @@
 <template>
 	<div id="app">
-    <HeaderNav :showTab="$route.meta ? $route.meta.showTab : {}"></HeaderNav>
+		<HeaderNav :showTab="$route.meta ? $route.meta.showTab : {}"></HeaderNav>
 		<router-view class="flex justify-content-center"></router-view>
 	</div>
 </template>
 
 <script>
-import HeaderNav from './components/HeaderNav.vue'
-export default {
-  components: {HeaderNav},
-  mounted() {
-    console.log(this.$route.meta)
-  }
-}
+	import HeaderNav from "./components/HeaderNav.vue";
+	export default {
+		components: { HeaderNav },
+		mounted() {
+			console.log(this.$route.meta);
+		},
+	};
 </script>
 
 <style lang="scss">
@@ -51,12 +51,20 @@ export default {
 		}
 	}
 
+	.jcsb {
+		justify-content: space-between;
+	}
+
 	.flex-direction-column {
 		flex-direction: column;
 	}
 
-	.align-items-center {
+	.aic {
 		align-items: center;
+	}
+
+	.border-box {
+		box-sizing: border-box;
 	}
 
 	.pointer {

@@ -14,6 +14,7 @@ const routes = [{
   component: home,
   meta: {
     showTab: {
+      backBtnBol: true,
       userBtnBol: true,
       logoutBtnBol: true
     }
@@ -50,6 +51,9 @@ const routes = [{
       logoutBtnBol: true
     }
   }
+}, {
+  path: '*',
+  redirect: '/'
 }]
 
 const router = new VueRouter({
@@ -59,16 +63,16 @@ const router = new VueRouter({
 // 监测没有token默认跳转登录页
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token') || ''
-  if(!token) {
-    if(to.name === 'login') {
+  if (!token) {
+    if (to.name === 'login') {
       next()
-    }else {
-      next({name: 'login'})
+    } else {
+      next({ name: 'login' })
     }
-  }else {
-    if(to.name === 'login') {
-      next({path: '/'})
-    }else {
+  } else {
+    if (to.name === 'login') {
+      next({ path: '/' })
+    } else {
       next()
     }
   }

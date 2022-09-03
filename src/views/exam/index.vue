@@ -1,43 +1,50 @@
 <template>
 	<div class="exam flex-direction-column">
-		<template v-if="questionList.length">
-			<Nav :endTime="endTime" @click="showList = true" />
-			<Answer v-model="answer" :info="questionList[index]" />
-			<Btn
-				:index="index"
-				:total="questionList.length"
-				@pre="handleClick(-1)"
-				@next="handleClick(1)"
-				@submit="handleSubmit"
-			/>
-		</template>
-		<div v-else class="ready">准备考试</div>
-		<div
-			v-if="showList"
-			@click="showList = false"
-			class="list_bg flex justify-content-center align-items-center"
-		>
-			<div class="list">
-				<div class="overflow">
-					<div
-						v-for="(item, i) in questionList"
-						:key="item.id"
-						class="pointer"
-						:class="{
-							on: userAnswerList[item.id],
-						}"
-						@click="handleChoice(i)"
-					>
-						{{ item.index }}
+		<div v-if="finishInfo.bol" class="exam-list flex">
+			<p class="title">{{ finishInfo.examMsg }}</p>
+			<div class="desc">得分：{{ finishInfo.score }}</div>
+		</div>
+
+		<template v-else>
+			<template v-if="questionList.length">
+				<Nav :endTime="endTime" @click="showList = true" />
+				<Answer v-model="answer" :info="questionList[index]" />
+				<Btn
+					:index="index"
+					:total="questionList.length"
+					@pre="handleClick(-1)"
+					@next="handleClick(1)"
+					@submit="handleSubmit"
+				/>
+			</template>
+			<div v-else class="ready">准备考试</div>
+			<div
+				v-if="showList"
+				@click="showList = false"
+				class="list_bg flex justify-content-center aic"
+			>
+				<div class="list">
+					<div class="overflow">
+						<div
+							v-for="(item, i) in questionList"
+							:key="item.id"
+							class="pointer"
+							:class="{
+								on: userAnswerList[item.id],
+							}"
+							@click="handleChoice(i)"
+						>
+							{{ item.index }}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</template>
 	</div>
 </template>
 
 <script>
-	import { startExam, subAnswer, subPapers, test } from "@/api";
+	import { startExam, startExamMoni, subAnswer, subPapers, test } from "@/api";
 	import Nav from "./components/Nav";
 	import Answer from "./components/Answer";
 	import Btn from "./components/Btn";
@@ -53,6 +60,12 @@
 				answer: [],
 				showList: false,
 				userAnswerList: {}, // 已答
+				imitate: this.$route.query.imitate,
+				finishInfo: {
+					bol: false,
+					examMsg: "",
+					score: 0,
+				},
 			};
 		},
 		created() {
@@ -60,16 +73,32 @@
 			// 	userId: localStorage.getItem("userId"),
 			// });
 			// return;
-			startExam({
-				userId: localStorage.getItem("userId"),
-			}).then(({ code, msg, data }) => {
-				if (code != 200) return this.$message.error(msg);
+
+			let promise;
+
+			if (this.imitate) {
+				promise = startExamMoni({
+					userId: localStorage.getItem("userId"),
+				});
+			} else {
+				promise = startExam({
+					userId: localStorage.getItem("userId"),
+				});
+			}
+
+			promise.then(({ code, msg, data }) => {
+				if (code != 200) {
+					setTimeout(() => {
+						this.$router.back();
+					}, 300);
+					return this.$message.error(msg);
+				}
 
 				const { endTime, examMin, questionList, userAnswerList } = data.examInfo;
 				const allTime = Date.now() + examMin * 60 * 1000;
 				const time = endTime > allTime ? allTime : endTime;
 
-				const list = JSON.parse(userAnswerList);
+				const list = userAnswerList ? JSON.parse(userAnswerList) : {};
 				for (const key in list) {
 					const item = list[key];
 					list[key] = item.split("+");
@@ -89,6 +118,11 @@
 					type == 1
 						? this.answer + ""
 						: this.answer.sort((a, b) => a - b).join("+");
+
+				if (!answer)
+					return {
+						noAnswer: true,
+					};
 
 				this.userAnswerList[id] = answer.split("+");
 
@@ -112,25 +146,46 @@
 
 			handleClick(num) {
 				if (num > 0) {
-					const { questionId, answer } = this.handleAnswer();
+					const { questionId, answer, noAnswer } = this.handleAnswer();
 
-					subAnswer({
-						userId: localStorage.getItem("userId"),
-						questionId,
-						answer,
-					});
+					!noAnswer &&
+						subAnswer({
+							userId: localStorage.getItem("userId"),
+							questionId,
+							answer,
+							examType: this.imitate ? 2 : 1,
+						});
 				}
 				this.index += num;
 				this.answer = this.nextAnswer(this.index);
 			},
 
 			handleSubmit() {
-				const { questionId, answer } = this.handleAnswer();
+				for (let i = 0; i < this.questionList.length - 1; i++) {
+					const item = this.questionList[i];
+					if (!this.userAnswerList[item.id])
+						return this.$message.error(`您第${item.index}题还未答`);
+				}
+
+				const { questionId, answer, noAnswer } = this.handleAnswer();
+
+				if (noAnswer) return this.$message.error(`您最后一题还未答`);
 
 				subPapers({
 					userId: localStorage.getItem("userId"),
 					questionId,
 					answer,
+					examType: this.imitate ? 2 : 1,
+				}).then(({ code, msg, data }) => {
+					if (code != 200) return this.$message.error(msg);
+
+					const { score, examMsg } = data;
+
+					this.finishInfo = {
+						bol: true,
+						examMsg,
+						score,
+					};
 				});
 			},
 
@@ -211,6 +266,29 @@
 					clear: both;
 				}
 			}
+		}
+	}
+
+	.exam-list {
+		width: 100%;
+		max-width: 10rem;
+		height: 4rem;
+		box-sizing: border-box;
+		border: 1px solid #b1b1b1;
+		justify-content: space-between;
+		flex-direction: column;
+		border-radius: 0.08rem;
+		font-size: 0.45rem;
+		text-align: center;
+		padding: 0.7rem 0.5rem;
+		margin: 1rem auto 0;
+
+		.title {
+			font-size: 0.8rem;
+		}
+
+		.desc span:first-child {
+			margin-right: 0.3rem;
 		}
 	}
 </style>

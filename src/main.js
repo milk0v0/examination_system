@@ -17,6 +17,18 @@ window.onresize = () => {
   resize();
 }
 
+Vue.prototype.$getSearch = function (key) {
+  const search = location.search.substring(1).split('&');
+  const obj = {};
+
+  search.forEach(item => {
+    const [key, val] = item.split('=');
+    obj[key] = val
+  })
+
+  return obj[key];
+}
+
 Vue.prototype.$message = message;
 Vue.prototype.$message.error = function (str) {
   message({

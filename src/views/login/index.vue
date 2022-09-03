@@ -1,23 +1,32 @@
 <template>
-	<div class="login-page">
-		<div class="login-box">
-			<div class="list">
+	<div class="login-page border-box">
+		<div class="login-box border-box">
+			<div class="list flex jcsb aic border-box">
 				<span class="name">手机号</span>
-				<input class="inp phone-inp" maxlength="11" v-model="proxyPhone" />
+				<input
+					class="inp phone-inp border-box"
+					maxlength="11"
+					v-model="proxyPhone"
+					placeholder="请输入手机号码"
+				/>
 			</div>
-			<div class="list">
+			<div class="list flex jcsb aic border-box">
 				<span class="name">验证码</span>
-				<div class="code flex align-items-center">
-					<input class="inp code-inp" v-model="validCode" />
-					<span class="repeat" v-if="fetchCodeSend"
+				<div class="code flex jcsb aic">
+					<input
+						class="inp code-inp border-box"
+						v-model="validCode"
+						placeholder="请输入验证码"
+					/>
+					<span class="repeat border-box" v-if="fetchCodeSend"
 						>{{ countDown }}s重新获取</span
 					>
-					<span class="code-btn pointer" @click="fetchCode" v-else
+					<span class="code-btn border-box pointer" @click="fetchCode" v-else
 						>获取验证码</span
 					>
 				</div>
 			</div>
-			<div class="login-btn pointer" @click="submit">登录</div>
+			<div class="login-btn border-box pointer" @click="submit">登录</div>
 		</div>
 	</div>
 </template>
@@ -28,7 +37,7 @@
 		name: "login",
 		data() {
 			return {
-				phone: "", // 手机号
+				phone: this.$getSearch('phone') || "", // 手机号
 				validCode: "", // 手机验证码
 				countDown: 60, // 验证码倒计时
 				fetchCodeSend: false, // 是否发送验证码
@@ -110,34 +119,28 @@
 <style lang="scss" scoped>
 	.login-page {
 		width: 10rem;
-		box-sizing: border-box;
 		margin: auto;
 
 		.login-box {
 			width: 100%;
-			box-sizing: border-box;
-			padding-top: 2rem;
+			padding-top: 2.5rem;
 
 			.list {
 				width: 100%;
-				box-sizing: border-box;
-				padding: 0 1.2rem;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-top: 1rem;
+				padding: 0.4rem 1rem 0.4rem 1.2rem;
+				border-bottom: 0.03rem solid #e6e6e6;
 
 				.name {
+					color: #626262;
 					font-size: 0.5rem;
 				}
 
 				.inp {
-					outline: none;
 					height: 1rem;
-					box-sizing: border-box;
 					padding: 0 0.2rem;
-					border-radius: 0.05rem;
-					border: 1px solid #c3c3c3;
+					border: none;
+					outline: none;
+					font-size: 0.4rem;
 				}
 
 				.code,
@@ -146,34 +149,28 @@
 				}
 
 				.code {
-					justify-content: space-between;
-
 					.inp.code-inp {
 						width: 3rem;
 					}
 
-					.repeat {
+					.repeat,
+					.code-btn {
 						width: 2.3rem;
-						height: 1rem;
-						box-sizing: border-box;
-						line-height: 1rem;
-						font-size: 0.3rem;
-						background-color: #f3f3f3;
-						border-radius: 0.05rem;
-						color: #c3c3c3;
+						height: 0.8rem;
+						border-radius: 0.15rem;
+						line-height: 0.8rem;
 						text-align: center;
+						font-size: 0.32rem;
 					}
 
 					.code-btn {
-						width: 2.3rem;
-						height: 1rem;
-						box-sizing: border-box;
-						line-height: 1rem;
-						font-size: 0.3rem;
-						background-color: #f3f3f3;
-						border-radius: 0.05rem;
-						color: #169bd5;
-						text-align: center;
+						background-color: #1aa8db;
+						color: #fff;
+					}
+
+					.repeat {
+						background-color: #c3c3c3;
+						color: #fff;
 					}
 				}
 			}
@@ -181,14 +178,13 @@
 			.login-btn {
 				width: 5rem;
 				height: 1.1rem;
-				box-sizing: border-box;
+				margin: 1.5rem auto;
+				border-radius: 0.1rem;
+				background-color: #1aa8db;
 				line-height: 1.1rem;
 				font-size: 0.4rem;
-				background-color: #169bd5;
 				color: #fff;
 				text-align: center;
-				margin: 1.5rem auto;
-				border-radius: 0.08rem;
 			}
 		}
 	}

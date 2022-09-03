@@ -38,6 +38,15 @@ export async function startExam(params) {
 }
 
 /**
+ * 点击开始考试后调用此按钮，获取试题列表和考试时间-模拟考试
+ * @param {Object} params
+ * @param {string} params.userId 用户ID
+ */
+export async function startExamMoni(params) {
+  return await http.post('/exam/api/examUserExam/startExamMoni', params);
+}
+
+/**
  * 获取用户信息
  * @param {Object} params
  * @param {string} params.userId 用户ID

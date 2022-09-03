@@ -1,5 +1,6 @@
 import axios from 'axios';
 import message from './message';
+import router from '@/router'
 
 class HttpRequest {
   constructor(options) {
@@ -24,6 +25,12 @@ class HttpRequest {
 
     install.interceptors.response.use(res => {
       const { data } = res;
+      if (data.code == 1004) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('phone');
+        router.replace('/login');
+      }
 
       return data
     }, err => {
@@ -40,7 +47,7 @@ class HttpRequest {
 }
 
 const http = new HttpRequest({
-  baseURL: '/api'
+  baseURL: process.env.NODE_ENV === 'production' ? 'http://39.107.93.216:9010' : ''
 }).request();
 
 export {

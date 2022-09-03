@@ -51,10 +51,10 @@
 			},
 
 			handleLogout() {
-				localStorage.setItem("token", "");
-				localStorage.setItem("userId", "");
-				localStorage.setItem("phone", "");
-				this.$router.push("/login");
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('phone');
+				this.$router.replace("/login");
 			},
 		},
 	};

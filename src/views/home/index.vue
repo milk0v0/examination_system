@@ -30,6 +30,7 @@
 					sufNum: 0,
 					fNum: 0,
 					ufNum: 0,
+					examType: false,
 				},
 			};
 		},
@@ -55,9 +56,6 @@
 
 			// 跳转开始考试界面
 			jumpExamStart(bol) {
-				const canJump = bol ? 'sufNum' : 'ufNum';
-				if(this.info[canJump] <= 0) return this.$message.error('您已没有考试次数了嗷');
-
 				this.$router.push(
 					`/examStart?${bol ? "imitate=true&" : ""}questionNum=${
 						this.info.questionNum
