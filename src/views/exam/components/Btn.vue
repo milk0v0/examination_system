@@ -1,5 +1,5 @@
 <template>
-	<div class="btn flex justify-content-space-evenly">
+	<div class="btn flex justify-evenly">
 		<div :class="{ off: index <= 0 }" @click="index > 0 && $emit('pre')">
 			上一题
 		</div>
@@ -34,12 +34,12 @@
 	.btn {
 		> div {
 			width: 38%;
-			border-radius: 0.12rem;
+			border-radius: 0.15rem;
 			font-size: 0.45rem;
 			text-align: center;
 			background-color: rgb(22, 155, 213);
 			color: #fff;
-			line-height: 160%;
+			line-height: 1rem;
 			cursor: pointer;
 
 			&.off {

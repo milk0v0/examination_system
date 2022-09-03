@@ -1,6 +1,6 @@
 <template>
-  <div class="userInfo-page">
-    <div class="userInfo-box">
+  <div class="userInfo-page align-center">
+    <div class="userInfo-box" :class="{ load: !info.userId }">
       <div class="list">
         <div class="name">姓名:</div>
         <div class="desc">{{ info.name }}</div>
@@ -19,7 +19,9 @@
       </div>
       <div class="list">
         <div class="name">地址:</div>
-        <div class="desc">{{ info.province }}{{ info.city }}{{ info.county }}</div>
+        <div class="desc">
+          {{ info.province }}{{ info.city }}{{ info.county }}
+        </div>
       </div>
       <div class="list">
         <div class="name">详细地址:</div>
@@ -27,7 +29,7 @@
       </div>
       <div class="list">
         <div class="name">userId:</div>
-        <div class="desc">{{ userId }}</div>
+        <div class="desc">{{ info.userId }}</div>
       </div>
       <div class="list">
         <div class="name">ada:</div>
@@ -38,59 +40,82 @@
 </template>
 
 <script>
-import { userInfo } from '@/api'
+import { userInfo } from "@/api";
 export default {
   data() {
     return {
-      userId: localStorage.getItem("userId"),
-      info: {}
-    }
+      info: {},
+    };
   },
   methods: {
     getUserInfo() {
       userInfo({
-        userId: this.userId || localStorage.getItem("userId")
-      }).then(res => {
-        let { code, msg, data } = res
-        if(code == 200) {
-          this.info = data
-        }else {
-          this.$message.error(msg)
+        userId: localStorage.getItem("userId"),
+      }).then((res) => {
+        let { code, msg, data } = res;
+        if (code == 200) {
+          this.info = data;
+          this.info.userId = localStorage.getItem("userId");
+        } else {
+          this.$message.error(msg);
         }
-      })
-    }
+      });
+    },
   },
   created() {
-    this.getUserInfo()
-  }
-}
+    this.getUserInfo();
+  },
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .userInfo-page {
   width: 10rem;
+  height: calc(100vh - 4.6rem);
   box-sizing: border-box;
   margin: auto;
+
+  .userInfo-box {
+    width: 100%;
+
+    .list {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.5rem;
+      margin-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 0.03rem solid #e6e6e6;
+
+      &:nth-last-of-type(1) {
+        border: 0;
+      }
+
+      .name {
+        width: 40%;
+      }
+
+      .desc {
+        width: 60%;
+      }
+    }
+
+    &.load {
+      .desc {
+        background-color: #f2f3f5;
+        animation: fade 0.6s ease-in-out alternate infinite both;
+      }
+    }
+  }
 }
 
-.userInfo-box {
-  width: 90%;
-}
-
-.userInfo-box .list {
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  font-size: .4rem;
-  margin-top: 1rem;
-}
-.userInfo-box .list .name {
-  width: 35%;
-  font-weight: 400;
-}
-.userInfo-box .list .desc {
-  width: 74%;
-  font-weight: 500;
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 </style>

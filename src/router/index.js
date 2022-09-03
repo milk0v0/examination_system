@@ -14,7 +14,6 @@ const routes = [{
   component: home,
   meta: {
     showTab: {
-      backBtnBol: true,
       userBtnBol: true,
       logoutBtnBol: true
     }

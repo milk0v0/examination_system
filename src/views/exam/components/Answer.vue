@@ -1,56 +1,65 @@
 <template>
-	<div class="answer">
-		<div class="title">{{ info.index }}. {{ info.title }}</div>
-		<div class="info flex" v-for="item in info.options" :key="item.indexNumber">
-			<input
-				:type="info.type == 1 ? 'radio' : 'checkbox'"
-				:id="'input' + item.indexNumber"
-				name="input"
-				:value="item.indexNumber"
-				v-model="proxy"
-			/>
-			<label :for="'input' + item.indexNumber">{{ item.questionOption }}</label>
-		</div>
-	</div>
+  <div class="answer">
+    <div class="title">{{ info.index }}. {{ info.title }}</div>
+    <div class="info flex" v-for="item in info.options" :key="item.indexNumber">
+      <input
+        :type="info.type == 1 ? 'radio' : 'checkbox'"
+        :id="'input' + item.indexNumber"
+        name="input"
+        :value="item.indexNumber"
+        v-model="proxy"
+      />
+      <label :for="'input' + item.indexNumber">{{ item.questionOption }}</label>
+    </div>
+  </div>
 </template>
 
 <script>
-	export default {
-		name: "examAnswer",
-		props: {
-			info: {
-				type: Object,
-			},
-			value: {
-				type: [Array, Number],
-			},
-		},
-		computed: {
-			proxy: {
-				get() {
-					return this.value;
-				},
-				set(newVal) {
-					this.$emit("input", newVal);
-				},
-			},
-		},
-	};
+export default {
+  name: "examAnswer",
+  props: {
+    info: {
+      type: Object,
+    },
+    value: {
+      type: [Array, Number],
+    },
+  },
+  computed: {
+    proxy: {
+      get() {
+        return this.value;
+      },
+      set(newVal) {
+        this.$emit("input", newVal);
+      },
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-	.title {
-		font-size: 0.5rem;
-		margin-bottom: 1rem;
-	}
+.title {
+  font-size: 0.5rem;
+  margin-bottom: 1rem;
+}
 
-	.info {
-		font-size: 0.5rem;
-		margin-top: 0.5rem;
+.info {
+  font-size: 0.5rem;
+  padding: 0.25rem;
+  border-bottom: 0.03rem solid #e6e6e6;
 
-		label {
-			width: 100%;
-			margin-left: 0.2rem;
-		}
-	}
+  input {
+    width: 0.4rem;
+  }
+
+  label {
+    width: 100%;
+    margin-left: 0.2rem;
+  }
+
+  &:nth-last-of-type(1) {
+    border: 0;
+  }
+}
 </style>

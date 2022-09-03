@@ -1,0 +1,110 @@
+@font-face {
+  font-family: "iconfont";
+  /* Project id  */
+  src: url('../font/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fanhui:before {
+  content: "\f0292";
+}
+
+.icon-xiayiyeqianjinchakangengduo:before {
+  content: "\e8f1";
+}
+
+.icon-gerenxinxi:before {
+  content: "\e641";
+}
+
+.icon-tuichu:before {
+  content: "\e892";
+}
+
+.icon-daojishi:before {
+  content: "\e89a";
+}
+
+.icon-a-zaixianxuexikaoshipeixunkecheng-05:before {
+  content: "\e8ca";
+}
+
+.icon-a-zaixianxuexikaoshipeixunkecheng-02:before {
+  content: "\e8cb";
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-evenly {
+  justify-content: space-between;
+
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+  }
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.myScrollBar {
+  ::-webkit-scrollbar-track {
+    border-radius: 0.04rem;
+    background: #e1e1e1;
+    position: absolute;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0.08rem;
+    height: 0.08rem;
+    position: absolute;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #aeaeae;
+    position: absolute;
+  }
+  
+  .scrollBox::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+  }
+  
+  .scrollBox:hover::-webkit-scrollbar-thumb {
+    background: #aeaeae;
+  }
+  
+  .scrollBox::-webkit-scrollbar-thumb:hover {
+    background: #8c8c8c;
+  }
+}

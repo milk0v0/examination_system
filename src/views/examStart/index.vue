@@ -30,20 +30,19 @@
 
 		.examStart-box {
 			width: 80%;
-			margin-top: 1rem;
+			margin-top: 1.8rem;
 		}
 
 		.tips {
 			width: 100%;
 			box-sizing: border-box;
-			border: 1px solid #b1b1b1;
 			border-radius: 0.08rem;
-			font-size: 0.45rem;
+			font-size: 0.55rem;
 			text-align: center;
 			padding: 2rem 0.2rem;
 
 			p {
-				margin-bottom: 0.2rem;
+				margin-bottom: 0.4rem;
 			}
 		}
 

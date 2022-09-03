@@ -1,7 +1,7 @@
 <template>
 	<div class="login-page border-box">
 		<div class="login-box border-box">
-			<div class="list flex jcsb aic border-box">
+			<div class="list flex justify-between align-center border-box">
 				<span class="name">手机号</span>
 				<input
 					class="inp phone-inp border-box"
@@ -10,9 +10,9 @@
 					placeholder="请输入手机号码"
 				/>
 			</div>
-			<div class="list flex jcsb aic border-box">
+			<div class="list flex justify-between align-center border-box">
 				<span class="name">验证码</span>
-				<div class="code flex jcsb aic">
+				<div class="code flex justify-between align-center">
 					<input
 						class="inp code-inp border-box"
 						v-model="validCode"
