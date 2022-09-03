@@ -78,6 +78,15 @@ export async function subPapers(params) {
 }
 
 /**
+ * 交卷
+ * @param {Object} params
+ * @param {string} params.userId 用户ID
+ */
+export async function getMoniHisList(params) {
+  return await http.post('/exam/api/examUser/getMoniHisList', params);
+}
+
+/**
  * 清缓存
  */
 export async function test(params) {

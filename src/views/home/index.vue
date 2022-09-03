@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { getExamInfo } from "@/api";
+import { getExamInfo, getMoniHisList } from "@/api";
 export default {
   name: "home",
   data() {
@@ -64,6 +64,7 @@ export default {
 
   created() {
     this.getExamInfo();
+    this.getHistory();
   },
 
   methods: {
@@ -78,6 +79,14 @@ export default {
         } else {
           this.$message.error(msg);
         }
+      });
+    },
+
+    getHistory() {
+      getMoniHisList({
+        userId: this.userId || localStorage.getItem("userId"),
+      }).then((res) => {
+        console.log(res);
       });
     },
 
