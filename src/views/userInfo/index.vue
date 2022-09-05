@@ -70,8 +70,9 @@ export default {
 
 <style lang="scss" scoped>
 .userInfo-page {
-  width: 10rem;
-  height: calc(100vh - 4.6rem);
+  width: 80%;
+  max-width: 10rem;
+  min-height: calc(100vh - 4.6rem);
   box-sizing: border-box;
   margin: auto;
 

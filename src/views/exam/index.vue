@@ -8,11 +8,20 @@
 
     <template v-else>
       <template v-if="questionList.length">
-        <Nav :endTime="endTime" @click="showList = true" />
-        <Answer v-model="answer" :info="questionList[index]" />
+        <Nav
+          :isHistory="isHistory"
+          :endTime="endTime"
+          @click="showList = true"
+        />
+        <Answer
+          :isHistory="isHistory"
+          v-model="answer"
+          :info="questionList[index]"
+        />
         <Btn
           :index="index"
           :total="questionList.length"
+          :isHistory="isHistory"
           @pre="handleClick(-1)"
           @next="handleClick(1)"
           @submit="handleSubmit"
@@ -32,6 +41,7 @@
               class="pointer"
               :class="{
                 on: userAnswerList[item.id],
+                warn: isHistory && item.answer != item.userAnswer
               }"
               @click="handleChoice(i)"
             >
@@ -45,301 +55,339 @@
 </template>
 
 <script>
-import { startExam, startExamMoni, subAnswer, subPapers, test } from "@/api";
-import Nav from "./components/Nav";
-import Answer from "./components/Answer";
-import Btn from "./components/Btn";
+  import {
+    startExam,
+    startExamMoni,
+    subAnswer,
+    subPapers,
+    getMoniExamInfo,
+  } from "@/api";
+  import Nav from "./components/Nav";
+  import Answer from "./components/Answer";
+  import Btn from "./components/Btn";
 
-export default {
-  name: "exam",
-  components: { Nav, Answer, Btn },
-  data() {
-    return {
-      endTime: Date.now() + 40 * 1000 * 60,
-      questionList: [],
-      index: 0,
-      answer: [],
-      showList: false,
-      userAnswerList: {}, // 已答
-      imitate: this.$route.query.imitate,
-      finishInfo: {
-        bol: false,
-        examMsg: "",
-        score: 0,
-      },
-    };
-  },
-  created() {
-    // test({
-    // 	userId: localStorage.getItem("userId"),
-    // });
-    // return;
-
-    let promise;
-
-    if (this.imitate) {
-      promise = startExamMoni({
-        userId: localStorage.getItem("userId"),
-      });
-    } else {
-      promise = startExam({
-        userId: localStorage.getItem("userId"),
-      });
-    }
-
-    promise.then(({ code, msg, data }) => {
-      if (code != 200) {
-        setTimeout(() => {
-          this.$router.back();
-        }, 300);
-        return this.$message.error(msg);
-      }
-
-      const { endTime, examMin, questionList, userAnswerList } = data.examInfo;
-      const allTime = Date.now() + examMin * 60 * 1000;
-      const time = endTime > allTime ? allTime : endTime;
-
-      const list = userAnswerList ? JSON.parse(userAnswerList) : {};
-      for (const key in list) {
-        const item = list[key];
-        list[key] = item.split("+");
-      }
-
-      this.userAnswerList = list;
-      this.questionList = questionList;
-
-      this.answer = this.nextAnswer(0);
-      this.endTime = time;
-    });
-  },
-  methods: {
-    handleAnswer() {
-      const { id, type } = this.questionList[this.index];
-      const answer =
-        type == 1
-          ? this.answer + ""
-          : this.answer.sort((a, b) => a - b).join("+");
-
-      if (!answer)
-        return {
-          noAnswer: true,
-        };
-
-      this.userAnswerList[id] = answer.split("+");
-
+  export default {
+    name: "exam",
+    components: { Nav, Answer, Btn },
+    data() {
+      const { imitate, examId } = this.$route.query;
       return {
-        questionId: id,
-        answer,
+        endTime: Date.now() + 40 * 1000 * 60,
+        questionList: [],
+        index: 0,
+        answer: [],
+        showList: false,
+        userAnswerList: {}, // 已答
+        imitate,
+        finishInfo: {
+          bol: false,
+          examMsg: "",
+          score: 0,
+        },
+        navStr: "",
+        examId,
+        isHistory: !!examId,
       };
     },
+    created() {
+      if (this.examId) {
+        getMoniExamInfo({
+          userId: localStorage.getItem("userId"),
+          examId: this.examId,
+        }).then(({ code, msg, data }) => {
+          if (code != 200) {
+            setTimeout(() => {
+              this.$router.back();
+            }, 300);
+            return this.$message.error(msg);
+          }
 
-    nextAnswer(index) {
-      const { id, type } = this.questionList[index];
-      const res = this.userAnswerList[id];
-      if (!res) return [];
+          this.navStr = "模考记录";
 
-      if (type == 1) {
-        return +res[0];
+          const obj = {};
+          for (const key in data) {
+            const item = data[key];
+            obj[item.id] = item.userAnswer.split("+");
+          }
+
+          this.userAnswerList = obj;
+
+          this.questionList = data;
+          this.answer = this.nextAnswer(0);
+        });
       } else {
-        return [...res];
+        let promise;
+
+        if (this.imitate) {
+          promise = startExamMoni({
+            userId: localStorage.getItem("userId"),
+          });
+        } else {
+          promise = startExam({
+            userId: localStorage.getItem("userId"),
+          });
+        }
+
+        promise.then(({ code, msg, data }) => {
+          if (code != 200) {
+            setTimeout(() => {
+              this.$router.back();
+            }, 300);
+            return this.$message.error(msg);
+          }
+
+          const { endTime, examMin, questionList, userAnswerList } =
+            data.examInfo;
+          const allTime = Date.now() + examMin * 60 * 1000;
+          const time = endTime > allTime ? allTime : endTime;
+
+          const list = userAnswerList ? JSON.parse(userAnswerList) : {};
+          for (const key in list) {
+            const item = list[key];
+            list[key] = item.split("+");
+          }
+
+          this.userAnswerList = list;
+          this.questionList = questionList;
+
+          this.answer = this.nextAnswer(0);
+          this.endTime = time;
+        });
       }
     },
+    methods: {
+      handleAnswer() {
+        const { id, type } = this.questionList[this.index];
+        const answer =
+          type == 1
+            ? this.answer + ""
+            : this.answer.sort((a, b) => a - b).join("+");
 
-    handleClick(num) {
-      if (num > 0) {
+        if (!answer)
+          return {
+            noAnswer: true,
+          };
+
+        this.userAnswerList[id] = answer.split("+");
+
+        return {
+          questionId: id,
+          answer,
+        };
+      },
+
+      nextAnswer(index) {
+        const { id, type } = this.questionList[index];
+        const res = this.userAnswerList[id];
+        if (!res) return [];
+
+        if (type == 1) {
+          return +res[0];
+        } else {
+          return [...res];
+        }
+      },
+
+      handleClick(num) {
+        if (num > 0 && !this.isHistory) {
+          const { questionId, answer, noAnswer } = this.handleAnswer();
+
+          !noAnswer &&
+            subAnswer({
+              userId: localStorage.getItem("userId"),
+              questionId,
+              answer,
+              examType: this.imitate ? 2 : 1,
+            });
+        }
+        this.index += num;
+        this.answer = this.nextAnswer(this.index);
+      },
+
+      handleSubmit() {
+        for (let i = 0; i < this.questionList.length - 1; i++) {
+          const item = this.questionList[i];
+          if (!this.userAnswerList[item.id])
+            return this.$message.error(`您第${item.index}题还未答`);
+        }
+
         const { questionId, answer, noAnswer } = this.handleAnswer();
 
-        !noAnswer &&
-          subAnswer({
-            userId: localStorage.getItem("userId"),
-            questionId,
-            answer,
-            examType: this.imitate ? 2 : 1,
-          });
-      }
-      this.index += num;
-      this.answer = this.nextAnswer(this.index);
+        if (noAnswer) return this.$message.error(`您最后一题还未答`);
+
+        subPapers({
+          userId: localStorage.getItem("userId"),
+          questionId,
+          answer,
+          examType: this.imitate ? 2 : 1,
+        }).then(({ code, msg, data }) => {
+          if (code != 200) return this.$message.error(msg);
+
+          const { score, examMsg } = data;
+
+          this.finishInfo = {
+            bol: true,
+            examMsg,
+            score,
+          };
+        });
+      },
+
+      handleChoice(index) {
+        this.index = index;
+        this.answer = this.nextAnswer(this.index);
+      },
     },
-
-    handleSubmit() {
-      for (let i = 0; i < this.questionList.length - 1; i++) {
-        const item = this.questionList[i];
-        if (!this.userAnswerList[item.id])
-          return this.$message.error(`您第${item.index}题还未答`);
-      }
-
-      const { questionId, answer, noAnswer } = this.handleAnswer();
-
-      if (noAnswer) return this.$message.error(`您最后一题还未答`);
-
-      subPapers({
-        userId: localStorage.getItem("userId"),
-        questionId,
-        answer,
-        examType: this.imitate ? 2 : 1,
-      }).then(({ code, msg, data }) => {
-        if (code != 200) return this.$message.error(msg);
-
-        const { score, examMsg } = data;
-
-        this.finishInfo = {
-          bol: true,
-          examMsg,
-          score,
-        };
-      });
-    },
-
-    handleChoice(index) {
-      this.index = index;
-      this.answer = this.nextAnswer(this.index);
-    },
-  },
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.exam {
-  width: 80%;
-  max-width: 10rem;
-  min-height: 70vh;
-  margin: 0.6rem auto 0;
-  padding-bottom: 0.6rem;
-}
+  .exam {
+    width: 80%;
+    max-width: 10rem;
+    min-height: 70vh;
+    margin: 0.6rem auto 0;
+    padding-bottom: 0.6rem;
+  }
 
-.answer {
-  margin-top: 1rem;
-}
+  .answer {
+    margin-top: 1rem;
+  }
 
-.btn {
-  margin-top: 1rem;
-}
+  .btn {
+    margin-top: 1rem;
+  }
 
-.ready {
-  width: 96px;
-  height: 96px;
-  top: 0;
-  bottom: 50px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  border-top: 6px solid #ee822b;
-  border-radius: 50%;
-  animation: 1s spin linear infinite;
-
-  &::after {
-    content: "";
-    position: absolute;
+  .ready {
+    width: 96px;
+    height: 96px;
     top: 0;
-    bottom: 0;
+    bottom: 50px;
     left: 0;
     right: 0;
-    width: 72px;
-    height: 72px;
     margin: auto;
-    border-bottom: 4px solid #f2c213;
+    border-top: 6px solid #ee822b;
     border-radius: 50%;
-    animation: 2.8s spin linear infinite;
+    animation: 1s spin linear infinite;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 72px;
+      height: 72px;
+      margin: auto;
+      border-bottom: 4px solid #f2c213;
+      border-radius: 50%;
+      animation: 2.8s spin linear infinite;
+    }
   }
-}
 
-.list_bg {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  .list_bg {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
 
-  .list {
-    width: 8rem;
-    height: 9rem;
-    box-sizing: border-box;
-    margin-bottom: 3rem;
-    padding: 0.3rem 0;
-    border-radius: 0.25rem;
-    background-color: #fff;
+    .list {
+      width: 8rem;
+      height: 9rem;
+      box-sizing: border-box;
+      margin-bottom: 3rem;
+      padding: 0.3rem 0;
+      border-radius: 0.25rem;
+      background-color: #fff;
 
-    .overflow {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      padding-left: 0.3rem;
-      -webkit-overflow-scrolling: touch;
+      .overflow {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        padding-left: 0.3rem;
+        -webkit-overflow-scrolling: touch;
 
-      div {
-        float: left;
-        width: 1rem;
-        height: 1rem;
-        border: 0.01rem solid #000;
-        border-radius: 0.1rem;
-        background-color: #fff;
-        text-align: center;
-        line-height: 1rem;
-        font-size: 0.6rem;
-        margin: 0.235rem;
-        color: #333;
-        box-sizing: border-box;
+        div {
+          float: left;
+          width: 1rem;
+          height: 1rem;
+          border: 0.01rem solid #000;
+          border-radius: 0.1rem;
+          background-color: #fff;
+          text-align: center;
+          line-height: 1rem;
+          font-size: 0.6rem;
+          margin: 0.235rem;
+          color: #333;
+          box-sizing: border-box;
 
-        &.on {
-          border: 0.01rem solid #169bd5;
-          background-color: #169bd5;
-          color: #fff;
+          &.on {
+            border: 0.01rem solid #169bd5;
+            background-color: #169bd5;
+            color: #fff;
+          }
+
+          &.warn {
+            border: 0.01rem solid red;
+            background-color: red;
+          }
+        }
+
+        ::after {
+          display: block;
+          content: "";
+          clear: both;
         }
       }
+    }
+  }
 
-      ::after {
-        display: block;
-        content: "";
-        clear: both;
+  .exam-list {
+    width: 100%;
+    max-width: 10rem;
+    box-sizing: border-box;
+    font-size: 0.45rem;
+    text-align: center;
+    padding: 0.7rem 0.5rem;
+    margin: 1rem auto 0;
+
+    .title {
+      font-size: 0.8rem;
+    }
+
+    .desc {
+      font-size: 0.6rem;
+      margin-top: 0.5rem;
+
+      span:first-child {
+        margin-right: 0.3rem;
       }
     }
-  }
-}
 
-.exam-list {
-  width: 100%;
-  max-width: 10rem;
-  box-sizing: border-box;
-  font-size: 0.45rem;
-  text-align: center;
-  padding: 0.7rem 0.5rem;
-  margin: 1rem auto 0;
-
-  .title {
-    font-size: 0.8rem;
-  }
-
-  .desc {
-    font-size: 0.6rem;
-    margin-top: 0.5rem;
-
-    span:first-child {
-      margin-right: 0.3rem;
+    .back {
+      width: 5rem;
+      height: 1.2rem;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      line-height: 1.2rem;
+      font-size: 0.4rem;
+      background-color: #169bd5;
+      color: #fff;
+      text-align: center;
+      margin: 2rem auto;
+      border-radius: 0.08rem;
     }
   }
 
-  .back {
-    width: 5rem;
-    height: 1.2rem;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    line-height: 1.2rem;
-    font-size: 0.4rem;
-    background-color: #169bd5;
-    color: #fff;
-    text-align: center;
-    margin: 2rem auto;
-    border-radius: 0.08rem;
+  @keyframes spin {
+    0% {
+      transform: rotateZ(0);
+    }
+    100% {
+      transform: rotateZ(360deg);
+    }
   }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotateZ(0);
-  }
-  100% {
-    transform: rotateZ(360deg);
-  }
-}
 </style>

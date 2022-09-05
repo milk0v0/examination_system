@@ -3,7 +3,10 @@
 		<div :class="{ off: index <= 0 }" @click="index > 0 && $emit('pre')">
 			上一题
 		</div>
-		<div @click="handleClick">{{ index >= total - 1 ? "交卷" : "下一题" }}</div>
+		<div
+			:class="{ off: index >= total - 1 && isHistory }"
+			@click="handleClick"
+		>{{ index >= total - 1 && !isHistory ? "交卷" : "下一题" }}</div>
 	</div>
 </template>
 
@@ -17,11 +20,14 @@
 			total: {
 				type: Number,
 			},
+			isHistory: {
+				type: Boolean,
+			}
 		},
 		methods: {
 			handleClick() {
 				if (this.index >= this.total - 1) {
-					this.$emit("submit");
+					!this.isHistory && this.$emit("submit");
 				} else {
 					this.$emit("next");
 				}

@@ -83,7 +83,17 @@ export async function subPapers(params) {
  * @param {string} params.userId 用户ID
  */
 export async function getMoniHisList(params) {
-  return await http.post('/exam/api/examUser/getMoniHisList', params);
+  return await http.post('/exam/api/examUserExam/getMoniHisList', params);
+}
+
+/**
+ * 交卷
+ * @param {Object} params
+ * @param {string} params.userId 用户ID
+ * @param {string} params.examId 用户考试ID
+ */
+export async function getMoniExamInfo(params) {
+  return await http.post('/exam/api/examUserExam/getMoniExamInfo', params);
 }
 
 /**

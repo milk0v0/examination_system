@@ -1,6 +1,9 @@
 <template>
   <div class="examNav flex justify-evenly">
-    <span>
+    <span v-if="isHistory">
+      模考记录
+    </span>
+    <span v-else>
       <i class="iconfont icon-daojishi" />
       {{ examMin }}
     </span>
@@ -15,6 +18,9 @@ export default {
     endTime: {
       type: Number,
     },
+    isHistory: {
+      type: Boolean,
+    }
   },
   data() {
     return {
@@ -27,6 +33,7 @@ export default {
   },
   methods: {
     getExamMin() {
+      if(this.navStr) return;
       const timeDiffer = this.endTime - Date.now();
       const minute = parseInt(timeDiffer / (1000 * 60));
       const second = parseInt((timeDiffer % (1000 * 60)) / 1000);
