@@ -64,7 +64,6 @@
     },
 
     created() {
-      console.log(this.type);
       this.getExamInfo();
       this.getHistory();
     },

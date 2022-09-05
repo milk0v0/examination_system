@@ -46,10 +46,6 @@ export default {
     },
   },
 
-  mounted() {
-    console.log(this.showTab);
-  },
-
   methods: {
     // 返回
     handleBack() {
