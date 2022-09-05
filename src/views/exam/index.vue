@@ -40,8 +40,8 @@
               :key="item.id"
               class="pointer"
               :class="{
-                on: userAnswerList[item.id],
-                warn: isHistory && item.answer != item.userAnswer
+                on: userAnswerList[item.id]?.join(''),
+                warn: isHistory && item.answer != item.userAnswer,
               }"
               @click="handleChoice(i)"
             >
@@ -87,6 +87,7 @@
         navStr: "",
         examId,
         isHistory: !!examId,
+        active: false, // 主动修改 answer，跳过
       };
     },
     created() {
@@ -155,18 +156,31 @@
         });
       }
     },
+    watch: {
+      answer(newVal) {
+        if (this.active) return (this.active = false);
+        if (this.isHistory) return;
+
+        const { questionId, answer } = this.handleAnswer(newVal);
+
+        subAnswer({
+          userId: localStorage.getItem("userId"),
+          questionId,
+          answer,
+          examType: this.imitate ? 2 : 1,
+        });
+      },
+    },
     methods: {
-      handleAnswer() {
+      handleAnswer(_answer) {
         const { id, type } = this.questionList[this.index];
         const answer =
           type == 1
-            ? this.answer + ""
-            : this.answer.sort((a, b) => a - b).join("+");
-
-        if (!answer)
-          return {
-            noAnswer: true,
-          };
+            ? _answer + ""
+            : [..._answer]
+                .filter((i) => i)
+                .sort((a, b) => a - b)
+                .join("+");
 
         this.userAnswerList[id] = answer.split("+");
 
@@ -177,6 +191,7 @@
       },
 
       nextAnswer(index) {
+        this.active = true;
         const { id, type } = this.questionList[index];
         const res = this.userAnswerList[id];
         if (!res) return [];
@@ -189,36 +204,19 @@
       },
 
       handleClick(num) {
-        if (num > 0 && !this.isHistory) {
-          const { questionId, answer, noAnswer } = this.handleAnswer();
-
-          !noAnswer &&
-            subAnswer({
-              userId: localStorage.getItem("userId"),
-              questionId,
-              answer,
-              examType: this.imitate ? 2 : 1,
-            });
-        }
         this.index += num;
         this.answer = this.nextAnswer(this.index);
       },
 
       handleSubmit() {
-        for (let i = 0; i < this.questionList.length - 1; i++) {
+        for (let i = 0; i < this.questionList.length; i++) {
           const item = this.questionList[i];
-          if (!this.userAnswerList[item.id])
+          if (!this.userAnswerList[item.id]?.join(""))
             return this.$message.error(`您第${item.index}题还未答`);
         }
 
-        const { questionId, answer, noAnswer } = this.handleAnswer();
-
-        if (noAnswer) return this.$message.error(`您最后一题还未答`);
-
         subPapers({
           userId: localStorage.getItem("userId"),
-          questionId,
-          answer,
           examType: this.imitate ? 2 : 1,
         }).then(({ code, msg, data }) => {
           if (code != 200) return this.$message.error(msg);
