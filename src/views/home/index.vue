@@ -2,9 +2,9 @@
   <div class="home-page">
     <div
       class="home-box flex align-center flex-column justify-evenly"
-      :style="history.length && { height: 'calc(100vh - 2rem)' }"
+      :style="(history.length && !type || type == 2) && { height: 'calc(100vh - 2rem)' }"
     >
-      <div class="exam-list flex pointer" @click="jumpExamStart(true)">
+      <div v-if="!type || type == 2" class="exam-list flex pointer" @click="jumpExamStart(true)">
         <p class="title">
           <i class="iconfont icon-a-zaixianxuexikaoshipeixunkecheng-05" />
           模拟考试
@@ -14,7 +14,7 @@
           <span>可考 {{ info.sufNum }} 次</span>
         </div>
       </div>
-      <div class="exam-list flex pointer" @click="jumpExamStart(false)">
+      <div v-if="!type || type == 1" class="exam-list flex pointer" @click="jumpExamStart(false)">
         <p class="title">
           <i class="iconfont icon-a-zaixianxuexikaoshipeixunkecheng-05" />
           正式考试
@@ -24,7 +24,7 @@
           <span>可考 {{ info.ufNum }} 次</span>
         </div>
       </div>
-      <div v-if="history.length" class="history">
+      <div v-if="history.length && (!type || type == 2)" class="history">
         <div class="title flex align-center">
           <div />
           <i class="iconfont icon-a-zaixianxuexikaoshipeixunkecheng-02" />
@@ -59,10 +59,12 @@
           ufNum: 0,
           examType: false,
         },
+        type: this.$getSearch('type')
       };
     },
 
     created() {
+      console.log(this.type);
       this.getExamInfo();
       this.getHistory();
     },
