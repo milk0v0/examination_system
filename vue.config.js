@@ -11,4 +11,7 @@ module.exports = {
       errors: false
     }
   },
+  configureWebpack: config => {
+    config.devtool = process.env.NODE_ENV === 'production' ? 'nosources-source-map' : 'source-map'
+  }
 }

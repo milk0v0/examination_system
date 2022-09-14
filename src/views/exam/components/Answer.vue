@@ -25,7 +25,7 @@
         >我的答案：<span
           v-for="(answer, index) in info.userAnswer.split('+')"
           :key="'answer' + index"
-          >{{ String.fromCharCode(+answer + 64) }}</span
+          >{{ answer ? String.fromCharCode(+answer + 64) : '' }}</span
         ></span
       >
     </div>
