@@ -47,7 +47,7 @@ class HttpRequest {
 }
 
 const http = new HttpRequest({
-  baseURL: process.env.NODE_ENV === 'production' ? 'http://api.cnsedu.net' : ''
+  baseURL: process.env.VUE_APP_baseURL
 }).request();
 
 export {

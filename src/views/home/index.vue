@@ -109,7 +109,7 @@
         } = this.info;
 
         if (!bol && !examType) return this.$message.error(examReason);
-        if (!bol && !moniFlag) return this.$message.error(moniReason);
+        if (bol && !moniFlag) return this.$message.error(moniReason);
 
         this.$router.push(
           `/examStart?${bol ? "imitate=true&" : ""}questionNum=${

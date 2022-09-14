@@ -1,5 +1,5 @@
 <template>
-  <div class="header-nav flex" :style="{
+  <div class="header-nav flex" :class="{
     color: showTab.backBtnBol || showTab.userBtnBol || showTab.logoutBtnBol
   }">
     <div class="left">

@@ -20,6 +20,6 @@ module.exports = {
     }
   },
   configureWebpack: config => {
-    config.devtool = process.env.NODE_ENV === 'production' ? 'nosources-source-map' : 'source-map'
+    config.devtool = process.env.NODE_ENV === 'development' ? 'source-map' : 'nosources-source-map'
   }
 }
