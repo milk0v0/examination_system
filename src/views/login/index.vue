@@ -1,6 +1,7 @@
 <template>
 	<div class="login-page border-box">
 		<div class="login-box border-box">
+			<div class="title">考试系统</div>
 			<div class="list flex justify-between align-center border-box">
 				<span class="name">手机号</span>
 				<input
@@ -123,7 +124,7 @@
 
 		.login-box {
 			width: 100%;
-			padding-top: 2.5rem;
+			padding-top: 2rem;
 
 			.list {
 				width: 100%;
@@ -187,5 +188,11 @@
 				text-align: center;
 			}
 		}
+	}
+
+	.title {
+		margin-bottom: 0.8rem;
+		font-size: 1rem;
+		text-align: center;
 	}
 </style>

@@ -50,9 +50,9 @@ export default {
 
 <style lang="scss" scoped>
 .examNav {
-  padding: 0.3rem 0;
-  border: 0.05rem solid rgba(0, 0, 0, 0.3);
+  padding: 0.35rem 0.05rem;
   border-radius: 0.2rem;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.15);
 
   span {
     font-size: 0.6rem;

@@ -1,5 +1,7 @@
 <template>
-  <div class="header-nav flex">
+  <div class="header-nav flex" :style="{
+    color: showTab.backBtnBol || showTab.userBtnBol || showTab.logoutBtnBol
+  }">
     <div class="left">
       <div
         class="flex align-center btn pointer"
@@ -73,8 +75,13 @@ export default {
   height: 1.5rem;
   box-sizing: border-box;
   padding: 0.3rem 0.3rem;
+  border-radius: 0 0 0.2rem 0.2rem;
   font-size: 0.5rem;
   justify-content: space-between;
+
+  &.color {
+    background-color: #f7f7f7;
+  }
 
   .btn {
     padding: 0.1rem 0.3rem;

@@ -78,7 +78,7 @@ export async function subPapers(params) {
 }
 
 /**
- * 交卷
+ * 查看历史记录
  * @param {Object} params
  * @param {string} params.userId 用户ID
  */
@@ -87,7 +87,7 @@ export async function getMoniHisList(params) {
 }
 
 /**
- * 交卷
+ * 查看历史记录详情
  * @param {Object} params
  * @param {string} params.userId 用户ID
  * @param {string} params.examId 用户考试ID
