@@ -106,8 +106,7 @@
           this.navStr = "模考记录";
 
           const obj = {};
-          for (const key in data) {
-            const item = data[key];
+          for (const item of data) {
             obj[item.id] = item.userAnswer.split("+");
           }
 
