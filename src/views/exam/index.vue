@@ -12,6 +12,7 @@
           :isHistory="isHistory"
           :endTime="endTime"
           @click="showList = true"
+          @timeOut="handleSubPapers"
         />
         <Answer
           :isHistory="isHistory"
@@ -46,6 +47,21 @@
               @click="handleChoice(i)"
             >
               {{ item.index }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 弹出确认框 -->
+      <div v-if="showOverlay" class="overlay">
+        <div class="box">
+          <div class="content flex justify-center align-center">是否确认交卷？</div>
+          <div class="overlayBtn flex">
+            <div class="pointer" @click="showOverlay = false">取消</div>
+            <div
+              class="pointer"
+              @click="handleSubPapers"
+            >
+              确认
             </div>
           </div>
         </div>
@@ -88,6 +104,7 @@
         examId,
         isHistory: !!examId,
         active: false, // 主动修改 answer，跳过
+        showOverlay: false,
       };
     },
     created() {
@@ -129,6 +146,16 @@
         }
 
         promise.then(({ code, msg, data }) => {
+          if (code == 300) {
+            const { examMsg, score } = data;
+            this.finishInfo = {
+              bol: true,
+              examMsg,
+              score,
+            };
+            return;
+          }
+
           if (code != 200) {
             setTimeout(() => {
               this.$router.back();
@@ -213,6 +240,12 @@
           if (!this.userAnswerList[item.id]?.join(""))
             return this.$message.error(`您第${item.index}题还未答`);
         }
+
+        this.showOverlay = true;
+      },
+
+      handleSubPapers() {
+        this.showOverlay = false;
 
         subPapers({
           userId: localStorage.getItem("userId"),
@@ -385,6 +418,50 @@
     }
     100% {
       transform: rotateZ(360deg);
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    .box {
+      position: absolute;
+      max-width: 8rem;
+      width: 65%;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border-radius: 16px;
+
+      .content {
+        padding: 30px 20px;
+        font-size: 0.4rem;
+        min-height: 60px;
+        color: #333;
+      }
+
+      .overlayBtn {
+        font-size: 0.4rem;
+        border-top: 0.03rem solid rgba(50, 50, 51, 0.05);
+
+        div {
+          line-height: 48px;
+          flex: 1;
+          text-align: center;
+
+          &:nth-last-of-type(1) {
+            color: #ee0a24;
+            border-left: 0.03rem solid rgba(50, 50, 51, 0.05);
+          }
+        }
+      }
     }
   }
 </style>

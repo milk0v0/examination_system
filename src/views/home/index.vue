@@ -11,7 +11,7 @@
         </p>
         <div class="desc">
           <span>已考 {{ info.sfNum }} 次</span>
-          <span>可考 {{ info.sufNum }} 次</span>
+          <span>剩余 {{ info.sufNum }} 次</span>
         </div>
       </div>
       <div v-if="!type || type == 1" class="exam-list flex pointer" @click="jumpExamStart(false)">
@@ -21,7 +21,7 @@
         </p>
         <div class="desc">
           <span>已考 {{ info.fNum }} 次</span>
-          <span>可考 {{ info.ufNum }} 次</span>
+          <span>剩余 {{ info.ufNum }} 次</span>
         </div>
       </div>
       <div v-if="history.length && (!type || type == 2)" class="history">

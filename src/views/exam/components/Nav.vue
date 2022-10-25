@@ -41,7 +41,11 @@ export default {
         second < 10 ? "0" + second : second
       }`;
 
-      if (timeDiffer <= 0 || this.isEnd) return;
+      if (timeDiffer <= 0 || this.isEnd) {
+        this.examMin = '00:00';
+        this.$emit('timeOut');
+        return;
+      }
       requestAnimationFrame(this.getExamMin);
     },
   },
